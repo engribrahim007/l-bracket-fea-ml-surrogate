@@ -1,0 +1,5 @@
+Model,Stress_Leg_Bottom_MPa,Stress_Hole_MPa,Stress_Fillet_MPa,Tip_Deflection_mm
+Linear regression,11.38,4.793,3.018,0.27
+Random forest,7.221,0.632,1.869,0.262
+Gradient boosting,5.954,0.681,1.44,0.19
+Gaussian Process,1.035,0.349,0.538,0.013

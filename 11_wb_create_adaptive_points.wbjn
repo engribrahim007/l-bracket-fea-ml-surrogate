@@ -1,0 +1,40 @@
+# encoding: utf-8
+# 2026 R1
+SetScriptVersion(Version="26.1.174")
+
+# Where the adaptive DOE table is
+csv_path = "G:/L_BRACKET_FEA_ML-Project/2). DOE_Python/doe_inputs_adaptive.csv"   # <- CHANGED
+
+# How many designs to create
+max_rows = 6   # <- CHANGED
+
+# Which CSV column goes into which Workbench parameter
+column_for = {
+    "P1": "P1_Hole_Radius",
+    "P2": "P2_Fillet_Radius",
+    "P3": "P3_Rib_Half_Front",
+    "P4": "P4_Rib_Half_Back",
+    "P5": "P5_Leg_Length",
+    "P6": "P6_Thickness_Horizontal_Leg",
+    "P7": "P7_Thickness_Wall_Leg",
+    "P13": "P13_Mesh_Global",
+    "P14": "P14_Mesh_Fillet",
+    "P15": "P15_Mesh_Hole",
+}
+parameter_order = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P13", "P14", "P15"]
+
+# Read the CSV file
+f = open(csv_path, "r")
+lines = f.read().splitlines()
+f.close()
+header = lines[0].split(",")
+
+# Create one design point per CSV row
+for line in lines[1:max_rows + 1]:
+    values = line.split(",")
+    row = dict(zip(header, values))
+    dp = Parameters.CreateDesignPoint()
+    for p_name in parameter_order:
+        parameter = Parameters.GetParameter(Name=p_name)
+        dp.SetParameterExpression(Parameter=parameter,
+                                  Expression=row[column_for[p_name]] + " [mm]")
